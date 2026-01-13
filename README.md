@@ -116,7 +116,7 @@ Ensure you have the following installed:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/kitchenmath.git
+git clone https://github.com/oyakhiree/kitchenmath.git
 
 # Navigate to project directory
 cd kitchenmath
@@ -593,7 +593,7 @@ export const CONVERSION_TO_BASE = {
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/kitchenmath.git
+git clone https://github.com/oyakhiree/kitchenmath.git
 cd kitchenmath
 
 # Install dependencies
@@ -803,7 +803,7 @@ We welcome contributions! Please follow these steps:
 ### Getting Started
 
 1. **Fork** the repository
-2. **Clone** your fork: `git clone https://github.com/YOUR_USERNAME/kitchenmath.git`
+2. **Clone** your fork: `git clone https://github.com/oyakhiree/kitchenmath.git`
 3. **Create** a branch: `git checkout -b feature/amazing-feature`
 4. **Make** your changes
 5. **Commit**: `git commit -m 'Add amazing feature'`
@@ -938,8 +938,8 @@ copies of the Software...
 
 ### Contributors
 
-<a href="https://github.com/yourusername/kitchenmath/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=yourusername/kitchenmath" />
+<a href="https://github.com/oyakhiree/kitchenmath/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=oyakhiree/kitchenmath" />
 </a>
 
 ---
