@@ -1,6 +1,6 @@
 /**
- * Header Component
- * App header with navigation and recipe switcher
+ * Header Component v2.0
+ * Simplified navigation with recipe switcher
  */
 
 import React from 'react';
@@ -17,39 +17,39 @@ export const Header: React.FC = () => {
     }));
 
     const handleNewRecipe = () => {
-        createRecipe({ name: 'New Recipe' });
+        createRecipe({ name: '' });
     };
 
     return (
-        <header className="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-slate-800">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-                <div className="flex items-center justify-between gap-4">
+        <header className="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-xl border-b border-slate-800/80">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                <div className="flex items-center justify-between h-16 md:h-18">
                     {/* Logo */}
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/25">
-                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF6B35] to-[#F4511E] flex items-center justify-center shadow-lg shadow-[#FF6B35]/25">
+                            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                             </svg>
                         </div>
-                        <div>
-                            <h1 className="text-xl font-bold text-white">
-                                Kitchen<span className="text-emerald-400">Math</span>
+                        <div className="hidden sm:block">
+                            <h1 className="text-lg font-bold text-white">
+                                Kitchen<span className="text-[#FF6B35]">Math</span>
                             </h1>
-                            <p className="text-xs text-slate-500 hidden sm:block">Profit Engine</p>
+                            <p className="text-[10px] text-slate-500 -mt-0.5 font-medium">Profit Engine</p>
                         </div>
                     </div>
 
-                    {/* Recipe Switcher */}
-                    <div className="flex items-center gap-3 flex-1 max-w-xs">
-                        {recipes.length > 0 && (
+                    {/* Recipe Switcher (Desktop) */}
+                    {recipes.length > 1 && (
+                        <div className="hidden md:block flex-1 max-w-[240px] mx-6">
                             <Select
                                 value={currentRecipeId || ''}
                                 onChange={(e) => setCurrentRecipe(e.target.value)}
                                 options={recipeOptions}
-                                placeholder="Select recipe..."
+                                placeholder="Switch recipe..."
                             />
-                        )}
-                    </div>
+                        </div>
+                    )}
 
                     {/* Actions */}
                     <div className="flex items-center gap-2">

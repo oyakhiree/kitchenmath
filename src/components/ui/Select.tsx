@@ -1,6 +1,6 @@
 /**
- * Select Component
- * Reusable select dropdown
+ * Select Component v2.0
+ * Modern dropdown with larger touch targets
  */
 
 import React, { forwardRef } from 'react';
@@ -26,7 +26,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                 {label && (
                     <label
                         htmlFor={selectId}
-                        className="block text-sm font-medium text-slate-300 mb-1.5"
+                        className="block text-sm font-semibold text-slate-300 mb-2"
                     >
                         {label}
                     </label>
@@ -36,13 +36,14 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                         ref={ref}
                         id={selectId}
                         className={`
-              w-full px-4 py-2.5 pr-10
-              bg-slate-800/50 border border-slate-700 
-              text-white
-              focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500
+              w-full px-4 py-3 pr-12 min-h-[48px]
+              bg-slate-800/60 border-2 border-slate-700/80 
+              text-white text-base
+              hover:border-slate-600
+              focus:outline-none focus:border-[#FF6B35] focus:ring-2 focus:ring-[#FF6B35]/20
               transition-all duration-200 rounded-xl
               appearance-none cursor-pointer
-              ${error ? 'border-red-500 focus:ring-red-500/50 focus:border-red-500' : ''}
+              ${error ? 'border-[#F44336] focus:border-[#F44336] focus:ring-[#F44336]/20' : ''}
               ${className}
             `}
                         {...props}
@@ -53,20 +54,20 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                             </option>
                         )}
                         {options.map((option) => (
-                            <option key={option.value} value={option.value}>
+                            <option key={option.value} value={option.value} className="bg-slate-800">
                                 {option.label}
                             </option>
                         ))}
                     </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                        <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                     </div>
                 </div>
                 {error && (
-                    <p className="mt-1.5 text-xs text-red-400 flex items-center gap-1">
-                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <p className="mt-2 text-xs text-[#F44336] flex items-center gap-1 font-medium">
+                        <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                         </svg>
                         {error}

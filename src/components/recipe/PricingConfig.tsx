@@ -1,118 +1,133 @@
 /**
- * PricingConfig Component
- * Target margin slider and currency selection
+ * PricingConfig Component v2.0
+ * Currency and margin configuration with preset buttons
  */
 
 import React from 'react';
-import { Card, Slider, Select } from '@/components/ui';
-import type { Recipe, CurrencySymbol } from '@/types';
-import { CURRENCY_OPTIONS, CURRENCIES } from '@/constants';
-import { useSettingsStore } from '@/stores';
+import { Select, Slider, Card } from '@/components/ui';
+import type { Recipe, CurrencyCode } from '@/types';
+import { CURRENCY_OPTIONS } from '@/constants';
 
 interface PricingConfigProps {
     recipe: Recipe;
     onUpdate: (data: Partial<Recipe>) => void;
 }
 
-const currencyOptions = CURRENCY_OPTIONS.map((symbol) => ({
-    value: symbol,
-    label: `${symbol} - ${CURRENCIES[symbol].name}`,
-}));
-
-const marginMarks = [
-    { value: 30, label: '30%' },
-    { value: 50, label: '50%' },
-    { value: 65, label: '65%' },
-    { value: 80, label: '80%' },
+const MARGIN_PRESETS = [
+    { label: 'Retail', value: 40, description: 'Bulk, wholesale' },
+    { label: 'Restaurant', value: 65, description: 'Dine-in, takeout' },
+    { label: 'Premium', value: 75, description: 'High-end, specialty' },
 ];
+
+const currencyOptions = CURRENCY_OPTIONS.map((c) => ({
+    value: c.code,
+    label: `${c.symbol} ${c.code} - ${c.name}`,
+}));
 
 export const PricingConfig: React.FC<PricingConfigProps> = ({
     recipe,
     onUpdate,
 }) => {
-    const { currency, setCurrency } = useSettingsStore();
-
-    const getMarginLabel = (margin: number): string => {
-        if (margin >= 70) return 'Retail / Takeout';
-        if (margin >= 50) return 'Restaurant';
-        if (margin >= 40) return 'Fast Food';
-        return 'Wholesale / Bulk';
-    };
-
-    const getMarginColor = (margin: number): string => {
-        if (margin >= 60) return 'text-emerald-400';
-        if (margin >= 40) return 'text-amber-400';
-        return 'text-red-400';
-    };
+    const isCustomMargin = !MARGIN_PRESETS.some(p => p.value === recipe.targetMargin);
 
     return (
         <Card variant="glass" padding="md">
             <div className="space-y-6">
                 {/* Currency Selection */}
-                <div className="flex items-center gap-4">
-                    <div className="flex-1">
-                        <Select
-                            label="Currency"
-                            value={currency}
-                            onChange={(e) => setCurrency(e.target.value as CurrencySymbol)}
-                            options={currencyOptions}
-                        />
-                    </div>
-                </div>
+                <Select
+                    label="Currency"
+                    value={recipe.currency || 'NGN'}
+                    onChange={(e) => onUpdate({ currency: e.target.value as CurrencyCode })}
+                    options={currencyOptions}
+                />
 
-                {/* Target Margin Slider */}
+                {/* Target Margin */}
                 <div>
-                    <div className="flex items-center justify-between mb-2">
-                        <label className="text-sm font-medium text-slate-300">
-                            Target Gross Margin
+                    <div className="flex items-center justify-between mb-4">
+                        <label className="text-sm font-semibold text-slate-300">
+                            Target Profit Margin
                         </label>
-                        <div className="text-right">
-                            <span className={`text-lg font-bold ${getMarginColor(recipe.targetMargin)}`}>
-                                {recipe.targetMargin}%
-                            </span>
-                            <p className="text-xs text-slate-500">{getMarginLabel(recipe.targetMargin)}</p>
-                        </div>
+                        <span className={`text-2xl font-bold font-display ${recipe.targetMargin >= 60
+                                ? 'text-[#4CAF50]'
+                                : recipe.targetMargin >= 30
+                                    ? 'text-[#FF9800]'
+                                    : 'text-[#F44336]'
+                            }`}>
+                            {recipe.targetMargin}%
+                        </span>
                     </div>
+
+                    {/* Preset Buttons */}
+                    <div className="grid grid-cols-3 gap-3 mb-5">
+                        {MARGIN_PRESETS.map((preset) => {
+                            const isActive = recipe.targetMargin === preset.value;
+                            return (
+                                <button
+                                    key={preset.value}
+                                    type="button"
+                                    onClick={() => onUpdate({ targetMargin: preset.value })}
+                                    className={`
+                    p-4 rounded-xl border-2 text-center transition-all duration-200
+                    ${isActive
+                                            ? 'border-[#FF6B35] bg-[#FF6B35]/10 shadow-lg shadow-[#FF6B35]/20'
+                                            : 'border-slate-700/60 bg-slate-800/40 hover:border-slate-600 hover:bg-slate-700/40'
+                                        }
+                  `}
+                                >
+                                    <div className={`text-lg font-bold ${isActive ? 'text-[#FF6B35]' : 'text-white'}`}>
+                                        {preset.value}%
+                                    </div>
+                                    <div className={`text-xs font-semibold mt-1 ${isActive ? 'text-[#FF6B35]/80' : 'text-slate-400'}`}>
+                                        {preset.label}
+                                    </div>
+                                    <div className="text-[10px] text-slate-500 mt-0.5">
+                                        {preset.description}
+                                    </div>
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {/* Custom Slider */}
                     <Slider
+                        label={isCustomMargin ? "Custom margin" : "Fine-tune margin"}
                         value={recipe.targetMargin}
                         onChange={(e) => onUpdate({ targetMargin: parseInt(e.target.value) })}
-                        min={20}
-                        max={85}
+                        min={10}
+                        max={90}
                         step={1}
                         showValue={false}
-                        marks={marginMarks}
+                        color={
+                            recipe.targetMargin >= 60
+                                ? 'success'
+                                : recipe.targetMargin >= 30
+                                    ? 'warning'
+                                    : 'danger'
+                        }
+                        marks={[
+                            { value: 10, label: '10%' },
+                            { value: 30, label: '30%' },
+                            { value: 50, label: '50%' },
+                            { value: 70, label: '70%' },
+                            { value: 90, label: '90%' },
+                        ]}
                     />
-                    <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-                        <button
-                            type="button"
-                            onClick={() => onUpdate({ targetMargin: 40 })}
-                            className={`p-2 rounded-lg text-xs transition-colors ${recipe.targetMargin === 40
-                                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50'
-                                    : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700'
-                                }`}
-                        >
-                            Retail (40%)
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => onUpdate({ targetMargin: 65 })}
-                            className={`p-2 rounded-lg text-xs transition-colors ${recipe.targetMargin === 65
-                                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50'
-                                    : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700'
-                                }`}
-                        >
-                            Restaurant (65%)
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => onUpdate({ targetMargin: 75 })}
-                            className={`p-2 rounded-lg text-xs transition-colors ${recipe.targetMargin === 75
-                                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50'
-                                    : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700'
-                                }`}
-                        >
-                            Premium (75%)
-                        </button>
+                </div>
+
+                {/* Margin Guide */}
+                <div className="p-4 bg-slate-700/30 rounded-xl">
+                    <div className="flex items-start gap-3">
+                        <div className="p-2 rounded-lg bg-[#2EC4B6]/20 text-[#2EC4B6] shrink-0">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p className="text-xs text-slate-400">
+                                <span className="font-semibold text-slate-300">Industry tip:</span> Restaurants typically aim for 60-70% gross margin.
+                                Food cost should be 28-35% of the selling price.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

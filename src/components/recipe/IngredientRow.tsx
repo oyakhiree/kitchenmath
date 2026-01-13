@@ -1,10 +1,10 @@
 /**
- * IngredientRow Component
- * Single ingredient input row with smart unit conversion
+ * IngredientRow Component v2.0
+ * Redesigned ingredient card with visual flow and inline calculations
  */
 
 import React, { useState, useEffect } from 'react';
-import { Input, Select, Button } from '@/components/ui';
+import { Input, Select } from '@/components/ui';
 import type { Ingredient, Unit } from '@/types';
 import { ALL_UNITS, UNIT_LABELS } from '@/constants';
 import { calculateCostPerUsage, areUnitsCompatible } from '@/utils';
@@ -15,7 +15,8 @@ interface IngredientRowProps {
     ingredient: Ingredient;
     onUpdate: (data: Partial<Ingredient>) => void;
     onDelete: () => void;
-    isFirst?: boolean;
+    totalCost?: number;
+    index: number;
 }
 
 const unitOptions = ALL_UNITS.map((unit) => ({
@@ -27,13 +28,14 @@ export const IngredientRow: React.FC<IngredientRowProps> = ({
     ingredient,
     onUpdate,
     onDelete,
-    isFirst = false,
+    totalCost = 0,
+    index,
 }) => {
     const currency = useCurrency();
     const [costPerPortion, setCostPerPortion] = useState<number | null>(null);
     const [unitError, setUnitError] = useState<string>('');
 
-    // Calculate cost per portion whenever ingredient values change
+    // Calculate cost per portion
     useEffect(() => {
         const compatible = areUnitsCompatible(ingredient.purchaseUnit, ingredient.usageUnit);
 
@@ -54,22 +56,45 @@ export const IngredientRow: React.FC<IngredientRowProps> = ({
         );
 
         setCostPerPortion(cost);
-    }, [ingredient]);
+    }, [
+        ingredient.purchasePrice,
+        ingredient.purchaseQuantity,
+        ingredient.purchaseUnit,
+        ingredient.usageQuantity,
+        ingredient.usageUnit,
+    ]);
+
+    const costPercentage = totalCost > 0 && costPerPortion ? (costPerPortion / totalCost) * 100 : 0;
 
     return (
-        <div className="bg-slate-800/30 rounded-xl p-4 border border-slate-700/30 hover:border-slate-600/50 transition-colors">
-            {/* Header Row: Name & Delete */}
-            <div className="flex items-center justify-between mb-4">
-                <Input
-                    value={ingredient.name}
-                    onChange={(e) => onUpdate({ name: e.target.value })}
-                    placeholder="Ingredient name (e.g., Rice)"
-                    className="font-medium bg-transparent border-0 p-0 text-white focus:ring-0 text-lg"
-                />
+        <div
+            className="group relative bg-slate-800/40 rounded-2xl border border-slate-700/60 overflow-hidden transition-all duration-200 hover:border-slate-600 hover:shadow-lg animate-fade-in-up"
+            style={{ animationDelay: `${index * 50}ms` }}
+        >
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-4 bg-slate-800/60 border-b border-slate-700/40">
+                <div className="flex items-center gap-3 flex-1">
+                    {/* Ingredient Icon */}
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF6B35]/20 to-[#F4511E]/10 flex items-center justify-center text-[#FF6B35] shrink-0">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                    </div>
+
+                    {/* Name Input */}
+                    <input
+                        value={ingredient.name}
+                        onChange={(e) => onUpdate({ name: e.target.value })}
+                        placeholder="Ingredient name"
+                        className="flex-1 bg-transparent border-0 text-lg font-semibold text-white placeholder-slate-500 focus:outline-none focus:ring-0"
+                    />
+                </div>
+
+                {/* Delete Button */}
                 <button
                     type="button"
                     onClick={onDelete}
-                    className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                    className="p-2.5 rounded-xl text-slate-500 opacity-0 group-hover:opacity-100 hover:text-[#F44336] hover:bg-[#F44336]/10 transition-all duration-200"
                     aria-label="Delete ingredient"
                 >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,71 +103,119 @@ export const IngredientRow: React.FC<IngredientRowProps> = ({
                 </button>
             </div>
 
-            {/* Purchase Info Row */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
-                <Input
-                    type="number"
-                    label="Purchase Price"
-                    value={ingredient.purchasePrice || ''}
-                    onChange={(e) => onUpdate({ purchasePrice: parseFloat(e.target.value) || 0 })}
-                    placeholder="0.00"
-                    leftAddon={currency}
-                    min={0}
-                    step="0.01"
-                />
-                <Input
-                    type="number"
-                    label="Purchase Quantity"
-                    value={ingredient.purchaseQuantity || ''}
-                    onChange={(e) => onUpdate({ purchaseQuantity: parseFloat(e.target.value) || 0 })}
-                    placeholder="0"
-                    min={0}
-                    step="0.01"
-                />
-                <Select
-                    label="Purchase Unit"
-                    value={ingredient.purchaseUnit}
-                    onChange={(e) => onUpdate({ purchaseUnit: e.target.value as Unit })}
-                    options={unitOptions}
-                />
-            </div>
+            {/* Content */}
+            <div className="p-5">
+                {/* Purchase → Usage Flow */}
+                <div className="flex flex-col md:flex-row items-stretch gap-4">
+                    {/* Purchase Section */}
+                    <div className="flex-1 space-y-3">
+                        <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                            <div className="w-5 h-5 rounded-full bg-[#2EC4B6]/20 flex items-center justify-center text-[#2EC4B6]">
+                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clipRule="evenodd" />
+                                </svg>
+                            </div>
+                            Purchase
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                            <Input
+                                type="number"
+                                value={ingredient.purchasePrice || ''}
+                                onChange={(e) => onUpdate({ purchasePrice: parseFloat(e.target.value) || 0 })}
+                                placeholder="Price"
+                                leftAddon={currency}
+                                min={0}
+                                step="0.01"
+                            />
+                            <div className="flex gap-2">
+                                <Input
+                                    type="number"
+                                    value={ingredient.purchaseQuantity || ''}
+                                    onChange={(e) => onUpdate({ purchaseQuantity: parseFloat(e.target.value) || 0 })}
+                                    placeholder="Qty"
+                                    min={0}
+                                    step="0.01"
+                                    className="w-20"
+                                />
+                                <Select
+                                    value={ingredient.purchaseUnit}
+                                    onChange={(e) => onUpdate({ purchaseUnit: e.target.value as Unit })}
+                                    options={unitOptions}
+                                />
+                            </div>
+                        </div>
+                    </div>
 
-            {/* Usage Info Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-                <Input
-                    type="number"
-                    label="Usage per Portion"
-                    value={ingredient.usageQuantity || ''}
-                    onChange={(e) => onUpdate({ usageQuantity: parseFloat(e.target.value) || 0 })}
-                    placeholder="0"
-                    min={0}
-                    step="0.01"
-                    error={unitError}
-                />
-                <Select
-                    label="Usage Unit"
-                    value={ingredient.usageUnit}
-                    onChange={(e) => onUpdate({ usageUnit: e.target.value as Unit })}
-                    options={unitOptions}
-                />
-            </div>
+                    {/* Arrow Divider */}
+                    <div className="flex items-center justify-center py-2 md:py-0">
+                        <div className="hidden md:flex w-12 h-12 rounded-full bg-slate-700/50 items-center justify-center text-[#FF6B35]">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </div>
+                        <div className="md:hidden w-full flex items-center gap-3">
+                            <div className="flex-1 h-px bg-slate-700"></div>
+                            <div className="w-8 h-8 rounded-full bg-slate-700/50 flex items-center justify-center text-[#FF6B35]">
+                                <svg className="w-4 h-4 rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </div>
+                            <div className="flex-1 h-px bg-slate-700"></div>
+                        </div>
+                    </div>
 
-            {/* Cost per Portion Display */}
-            {costPerPortion !== null && costPerPortion > 0 && (
-                <div className="flex items-center justify-between pt-3 border-t border-slate-700/30">
-                    <span className="text-sm text-slate-400">Cost per portion</span>
-                    <span className="text-lg font-bold text-emerald-400">
-                        {formatCurrency(costPerPortion, currency)}
-                    </span>
+                    {/* Usage Section */}
+                    <div className="flex-1 space-y-3">
+                        <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                            <div className="w-5 h-5 rounded-full bg-[#FF6B35]/20 flex items-center justify-center text-[#FF6B35]">
+                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                                    <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
+                                </svg>
+                            </div>
+                            Per Portion
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                            <Input
+                                type="number"
+                                value={ingredient.usageQuantity || ''}
+                                onChange={(e) => onUpdate({ usageQuantity: parseFloat(e.target.value) || 0 })}
+                                placeholder="Amount"
+                                min={0}
+                                step="0.01"
+                                error={unitError}
+                            />
+                            <Select
+                                value={ingredient.usageUnit}
+                                onChange={(e) => onUpdate({ usageUnit: e.target.value as Unit })}
+                                options={unitOptions}
+                            />
+                        </div>
+                    </div>
                 </div>
-            )}
 
-            {/* First Row Help Text */}
-            {isFirst && (
-                <p className="text-xs text-slate-500 mt-3">
-                    💡 <strong>Tip:</strong> Enter the price you paid for the full bag/container, then how much you use per serving. We&apos;ll calculate the cost automatically!
-                </p>
-            )}
+                {/* Cost Result */}
+                {costPerPortion !== null && costPerPortion > 0 && (
+                    <div className="mt-5 pt-4 border-t border-slate-700/40">
+                        <div className="flex items-center justify-between mb-2">
+                            <span className="text-sm font-medium text-slate-400">Cost per portion</span>
+                            <span className="text-xl font-bold text-[#4CAF50] font-display">
+                                {formatCurrency(costPerPortion, currency)}
+                            </span>
+                        </div>
+                        {/* Progress Bar */}
+                        <div className="h-2 bg-slate-700/60 rounded-full overflow-hidden">
+                            <div
+                                className="h-full bg-gradient-to-r from-[#66BB6A] to-[#4CAF50] rounded-full transition-all duration-500 ease-out"
+                                style={{ width: `${Math.min(costPercentage, 100)}%` }}
+                            />
+                        </div>
+                        <p className="text-xs text-slate-500 mt-2">
+                            {costPercentage.toFixed(0)}% of total ingredient cost
+                        </p>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
