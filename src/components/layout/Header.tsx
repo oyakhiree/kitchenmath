@@ -71,14 +71,15 @@ export const Header: React.FC = () => {
                             onClick={handleNewRecipe}
                             size="sm"
                             variant="primary"
-                            className="rounded-full px-5"
+                            className="rounded-full px-2.5 py-1.5 h-8 text-xs md:text-sm md:px-5 md:h-9"
                             leftIcon={
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                                 </svg>
                             }
                         >
-                            New Recipe
+                            <span className="hidden md:inline">New Recipe</span>
+                            <span className="md:hidden">New</span>
                         </Button>
                     </div>
                 </div>
