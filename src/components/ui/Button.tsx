@@ -22,30 +22,24 @@ const variantClasses: Record<ButtonVariant, string> = {
     bg-gradient-to-r from-[#FF6B35] to-[#F4511E] 
     hover:from-[#F4511E] hover:to-[#E64A19] 
     text-white font-semibold
-    shadow-lg shadow-[#FF6B35]/25 
-    hover:shadow-xl hover:shadow-[#FF6B35]/30
     active:scale-[0.98]
   `,
   secondary: `
     bg-gradient-to-r from-[#2EC4B6] to-[#00ACC1] 
     hover:from-[#00ACC1] hover:to-[#0097A7] 
     text-white font-semibold
-    shadow-lg shadow-[#2EC4B6]/25 
-    hover:shadow-xl hover:shadow-[#2EC4B6]/30
     active:scale-[0.98]
   `,
   success: `
     bg-gradient-to-r from-[#66BB6A] to-[#4CAF50] 
     hover:from-[#4CAF50] hover:to-[#43A047] 
     text-white font-semibold
-    shadow-lg shadow-[#4CAF50]/25
     active:scale-[0.98]
   `,
   danger: `
     bg-gradient-to-r from-[#EF5350] to-[#F44336] 
     hover:from-[#F44336] hover:to-[#E53935] 
     text-white font-semibold
-    shadow-lg shadow-[#F44336]/25
     active:scale-[0.98]
   `,
   ghost: `
