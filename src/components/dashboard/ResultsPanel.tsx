@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { Card, MetricCard, Slider } from '@/components/ui';
+import { Slider } from '@/components/ui';
 import type { Recipe } from '@/types';
 import { useCalculations, useStressTest } from '@/hooks';
 import { useCurrency } from '@/stores';

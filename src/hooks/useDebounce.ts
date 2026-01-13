@@ -32,7 +32,7 @@ export function useDebouncedCallback<TArgs extends unknown[]>(
     callback: (...args: TArgs) => void,
     delay: number = UI_CONFIG.debounceMs
 ): (...args: TArgs) => void {
-    const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+    const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | null>(null);
 
     return (...args: TArgs) => {
         if (timeoutId) {

@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { Header } from '@/components/layout';
 import { IngredientList, OverheadSection, PricingConfig } from '@/components/recipe';
 import { ResultsPanel } from '@/components/dashboard';
-import { Card, Button } from '@/components/ui';
+import { Button } from '@/components/ui';
 import { useRecipeStore, useCurrentRecipe, useRecipes, useCurrency } from '@/stores';
 import { CURRENCIES } from '@/constants';
 
