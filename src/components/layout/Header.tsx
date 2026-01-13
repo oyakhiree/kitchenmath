@@ -40,13 +40,13 @@ export const Header: React.FC = () => {
 
                         {/* Context Switcher (Recipe Selector) */}
                         {recipes.length > 0 && (
-                            <div className="hidden md:flex items-center">
-                                <span className="text-sm text-gray-500 mr-2">Recipe:</span>
-                                <div className="relative group">
+                            <div className="flex items-center ml-2">
+                                <span className="text-sm text-gray-500 mr-2 hidden md:inline">Recipe:</span>
+                                <div className="relative group flex items-center">
                                     <select
                                         value={currentRecipeId || ''}
                                         onChange={(e) => setCurrentRecipe(e.target.value)}
-                                        className="appearance-none bg-transparent pl-0 pr-8 py-1 text-sm font-semibold text-gray-900 border-none focus:ring-0 cursor-pointer hover:text-orange-600 transition-colors"
+                                        className="appearance-none bg-transparent pl-0 pr-6 md:pr-8 py-1 text-sm font-semibold text-gray-900 border-none focus:ring-0 cursor-pointer hover:text-orange-600 transition-colors truncate max-w-[120px] sm:max-w-[200px]"
                                     >
                                         {recipes.map((r) => (
                                             <option key={r.id} value={r.id}>
