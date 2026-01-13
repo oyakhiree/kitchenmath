@@ -15,24 +15,24 @@ interface SliderProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 
 
 const colorConfig = {
     primary: {
-        gradient: 'from-[#FF6B35] to-[#F4511E]',
-        thumb: 'bg-gradient-to-br from-[#FF6B35] to-[#F4511E]',
-        shadow: 'shadow-[#FF6B35]/40',
+        start: '#FF6B35',
+        end: '#F4511E',
+        text: 'text-[#FF6B35]',
     },
     success: {
-        gradient: 'from-[#66BB6A] to-[#4CAF50]',
-        thumb: 'bg-gradient-to-br from-[#66BB6A] to-[#4CAF50]',
-        shadow: 'shadow-[#4CAF50]/40',
+        start: '#66BB6A',
+        end: '#4CAF50',
+        text: 'text-[#4CAF50]',
     },
     warning: {
-        gradient: 'from-[#FFB74D] to-[#FF9800]',
-        thumb: 'bg-gradient-to-br from-[#FFB74D] to-[#FF9800]',
-        shadow: 'shadow-[#FF9800]/40',
+        start: '#FFB74D',
+        end: '#FF9800',
+        text: 'text-[#FF9800]',
     },
     danger: {
-        gradient: 'from-[#EF5350] to-[#F44336]',
-        thumb: 'bg-gradient-to-br from-[#EF5350] to-[#F44336]',
-        shadow: 'shadow-[#F44336]/40',
+        start: '#EF5350',
+        end: '#F44336',
+        text: 'text-[#F44336]',
     },
 };
 
@@ -54,14 +54,16 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
     ) => {
         const currentValue = typeof value === 'number' ? value : Number(value) || 0;
         const percentage = ((currentValue - Number(min)) / (Number(max) - Number(min))) * 100;
-        const colors = colorConfig[color];
+        const colors = colorConfig[color] || colorConfig.primary;
 
-        const gradientStyle = useMemo(() => ({
-            background: `linear-gradient(to right, 
-        ${color === 'primary' ? '#FF6B35' : color === 'success' ? '#4CAF50' : color === 'warning' ? '#FF9800' : '#F44336'} 0%, 
-        ${color === 'primary' ? '#F4511E' : color === 'success' ? '#43A047' : color === 'warning' ? '#F57C00' : '#E53935'} ${percentage}%, 
-        #334155 ${percentage}%)`,
-        }), [percentage, color]);
+        const sliderStyle = useMemo(() => ({
+            background: `linear-gradient(to right, ${colors.start} 0%, ${colors.end} ${percentage}%, #334155 ${percentage}%)`,
+        }), [percentage, colors.start, colors.end]);
+
+        const thumbStyle: React.CSSProperties = {
+            background: `linear-gradient(135deg, ${colors.start}, ${colors.end})`,
+            boxShadow: `0 4px 12px ${colors.start}66`,
+        };
 
         return (
             <div className="w-full">
@@ -71,16 +73,42 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
                             <label className="text-sm font-semibold text-slate-300">{label}</label>
                         )}
                         {showValue && (
-                            <span className={`text-sm font-bold ${color === 'primary' ? 'text-[#FF6B35]' :
-                                    color === 'success' ? 'text-[#4CAF50]' :
-                                        color === 'warning' ? 'text-[#FF9800]' : 'text-[#F44336]'
-                                }`}>
+                            <span className={`text-sm font-bold ${colors.text}`}>
                                 {valueFormatter(currentValue)}
                             </span>
                         )}
                     </div>
                 )}
                 <div className="relative py-2">
+                    <style>{`
+                        .slider-${color}::-webkit-slider-thumb {
+                            -webkit-appearance: none;
+                            appearance: none;
+                            width: 24px;
+                            height: 24px;
+                            border-radius: 50%;
+                            background: linear-gradient(135deg, ${colors.start}, ${colors.end});
+                            box-shadow: 0 4px 12px ${colors.start}66;
+                            border: 2px solid rgba(255,255,255,0.2);
+                            cursor: pointer;
+                            transition: transform 0.15s ease;
+                        }
+                        .slider-${color}::-webkit-slider-thumb:hover {
+                            transform: scale(1.1);
+                        }
+                        .slider-${color}::-webkit-slider-thumb:active {
+                            transform: scale(0.95);
+                        }
+                        .slider-${color}::-moz-range-thumb {
+                            width: 24px;
+                            height: 24px;
+                            border-radius: 50%;
+                            background: linear-gradient(135deg, ${colors.start}, ${colors.end});
+                            box-shadow: 0 4px 12px ${colors.start}66;
+                            border: 2px solid rgba(255,255,255,0.2);
+                            cursor: pointer;
+                        }
+                    `}</style>
                     <input
                         ref={ref}
                         type="range"
@@ -88,29 +116,12 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
                         min={min}
                         max={max}
                         className={`
-              w-full h-2 appearance-none cursor-pointer rounded-full
-              [&::-webkit-slider-thumb]:appearance-none
-              [&::-webkit-slider-thumb]:w-6
-              [&::-webkit-slider-thumb]:h-6
-              [&::-webkit-slider-thumb]:rounded-full
-              [&::-webkit-slider-thumb]:${colors.thumb}
-              [&::-webkit-slider-thumb]:shadow-lg
-              [&::-webkit-slider-thumb]:${colors.shadow}
-              [&::-webkit-slider-thumb]:border-2
-              [&::-webkit-slider-thumb]:border-white/20
-              [&::-webkit-slider-thumb]:transition-transform
-              [&::-webkit-slider-thumb]:duration-150
-              [&::-webkit-slider-thumb]:hover:scale-110
-              [&::-webkit-slider-thumb]:active:scale-95
-              [&::-moz-range-thumb]:w-6
-              [&::-moz-range-thumb]:h-6
-              [&::-moz-range-thumb]:rounded-full
-              [&::-moz-range-thumb]:bg-[#FF6B35]
-              [&::-moz-range-thumb]:border-0
-              focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35]/50
-              ${className}
-            `}
-                        style={gradientStyle}
+                            slider-${color}
+                            w-full h-2 appearance-none cursor-pointer rounded-full
+                            focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35]/50
+                            ${className}
+                        `}
+                        style={sliderStyle}
                         {...props}
                     />
                 </div>
