@@ -7,6 +7,7 @@ import React from 'react';
 import { Accordion, Input, Slider, Toggle } from '@/components/ui';
 import type { Recipe } from '@/types';
 import { useCurrency } from '@/stores';
+import { CURRENCIES } from '@/constants';
 
 interface OverheadSectionProps {
     recipe: Recipe;
@@ -17,7 +18,10 @@ export const OverheadSection: React.FC<OverheadSectionProps> = ({
     recipe,
     onUpdate,
 }) => {
-    const currency = useCurrency();
+    const defaultCurrency = useCurrency();
+    const currency = recipe.currency
+        ? Object.values(CURRENCIES).find(c => c.code === recipe.currency)?.symbol || defaultCurrency
+        : defaultCurrency;
 
     return (
         <div className="space-y-4">

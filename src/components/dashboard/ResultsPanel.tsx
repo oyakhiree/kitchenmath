@@ -9,14 +9,17 @@ import type { Recipe } from '@/types';
 import { useCalculations, useStressTest } from '@/hooks';
 import { useCurrency } from '@/stores';
 import { formatCurrency, formatPercentage } from '@/utils/formatting';
-import { STRESS_TEST_CONFIG } from '@/constants';
+import { STRESS_TEST_CONFIG, CURRENCIES } from '@/constants';
 
 interface ResultsPanelProps {
     recipe: Recipe | null;
 }
 
 export const ResultsPanel: React.FC<ResultsPanelProps> = ({ recipe }) => {
-    const currency = useCurrency();
+    const defaultCurrency = useCurrency();
+    const currency = recipe?.currency
+        ? Object.values(CURRENCIES).find(c => c.code === recipe.currency)?.symbol || defaultCurrency
+        : defaultCurrency;
     const calculations = useCalculations(recipe);
     const [inflationRate, setInflationRate] = useState(STRESS_TEST_CONFIG.defaultInflation);
     const stressTest = useStressTest(recipe, inflationRate);
@@ -178,7 +181,7 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({ recipe }) => {
                         <div>
                             <p className="text-xs text-gray-500">New Margin</p>
                             <p className={`text-lg font-semibold ${stressTest.marginStatus === 'healthy' ? 'text-emerald-600' :
-                                    stressTest.marginStatus === 'warning' ? 'text-amber-600' : 'text-red-600'
+                                stressTest.marginStatus === 'warning' ? 'text-amber-600' : 'text-red-600'
                                 }`}>
                                 {formatPercentage(stressTest.newMargin)}
                             </p>

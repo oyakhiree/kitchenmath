@@ -5,10 +5,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Input, Select } from '@/components/ui';
-import type { Ingredient, Unit } from '@/types';
+import type { Ingredient, Unit, CurrencySymbol } from '@/types';
 import { ALL_UNITS, UNIT_LABELS } from '@/constants';
 import { calculateCostPerUsage, areUnitsCompatible } from '@/utils';
-import { useCurrency } from '@/stores';
 import { formatCurrency } from '@/utils/formatting';
 
 interface IngredientRowProps {
@@ -17,6 +16,7 @@ interface IngredientRowProps {
     onDelete: () => void;
     totalCost?: number;
     index: number;
+    currencySymbol: CurrencySymbol;
 }
 
 const unitOptions = ALL_UNITS.map((unit) => ({
@@ -30,8 +30,8 @@ export const IngredientRow: React.FC<IngredientRowProps> = ({
     onDelete,
     totalCost = 0,
     index,
+    currencySymbol: currency,
 }) => {
-    const currency = useCurrency();
     const [costPerPortion, setCostPerPortion] = useState<number | null>(null);
     const [unitError, setUnitError] = useState<string>('');
 

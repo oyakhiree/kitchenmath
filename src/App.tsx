@@ -8,11 +8,13 @@ import { Header } from '@/components/layout';
 import { IngredientList, OverheadSection, PricingConfig } from '@/components/recipe';
 import { ResultsPanel } from '@/components/dashboard';
 import { Card, Button } from '@/components/ui';
-import { useRecipeStore, useCurrentRecipe, useRecipes } from '@/stores';
+import { useRecipeStore, useCurrentRecipe, useRecipes, useCurrency } from '@/stores';
+import { CURRENCIES } from '@/constants';
 
 const App: React.FC = () => {
   const recipes = useRecipes();
   const currentRecipe = useCurrentRecipe();
+  const defaultCurrency = useCurrency();
   const [mobileResultsOpen, setMobileResultsOpen] = useState(false);
   const {
     createRecipe,
@@ -35,8 +37,12 @@ const App: React.FC = () => {
 
   // Landing state
   if (!currentRecipe) {
+    // ... (rest of landing state is fine)
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+        {/* ... */}
+        {/* re-implementing truncated part to ensure match if needed, but actually I can target the component return block instead */}
+        {/* To allow replace to work, I should just target the import block and the main return block separately or combine if close */}
         <div className="text-center max-w-sm animate-fade-in-up">
           <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/20">
             <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,6 +68,11 @@ const App: React.FC = () => {
       </div>
     );
   }
+
+  // Derive active currency
+  const activeCurrencySymbol = currentRecipe.currency
+    ? Object.values(CURRENCIES).find(c => c.code === currentRecipe.currency)?.symbol || defaultCurrency
+    : defaultCurrency;
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -112,6 +123,7 @@ const App: React.FC = () => {
               </div>
               <IngredientList
                 ingredients={currentRecipe.ingredients}
+                currencySymbol={activeCurrencySymbol}
                 onAdd={(data) => addIngredient(currentRecipe.id, {
                   name: data?.name || '',
                   purchasePrice: data?.purchasePrice || 0,

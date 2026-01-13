@@ -6,13 +6,14 @@
 import React from 'react';
 import { Button } from '@/components/ui';
 import { IngredientRow } from './IngredientRow';
-import type { Ingredient } from '@/types';
+import type { Ingredient, CurrencySymbol } from '@/types';
 
 interface IngredientListProps {
     ingredients: Ingredient[];
     onAdd: (data?: Partial<Ingredient>) => void;
     onUpdate: (id: string, data: Partial<Ingredient>) => void;
     onDelete: (id: string) => void;
+    currencySymbol: CurrencySymbol;
 }
 
 // Common ingredient templates for quick-add
@@ -28,6 +29,7 @@ export const IngredientList: React.FC<IngredientListProps> = ({
     onAdd,
     onUpdate,
     onDelete,
+    currencySymbol,
 }) => {
     // Calculate total cost for percentage display
     const totalCost = ingredients.reduce((sum, ingredient) => {
@@ -98,6 +100,7 @@ export const IngredientList: React.FC<IngredientListProps> = ({
                     onDelete={() => onDelete(ingredient.id)}
                     totalCost={totalCost}
                     index={index}
+                    currencySymbol={currencySymbol}
                 />
             ))}
 
