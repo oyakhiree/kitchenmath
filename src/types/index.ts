@@ -26,10 +26,13 @@ export type UnitCategory = 'weight' | 'volume' | 'piece';
 /** Supported currency symbols */
 export type CurrencySymbol = '₦' | '$' | '£' | '€';
 
+/** Supported currency codes */
+export type CurrencyCode = 'NGN' | 'USD' | 'GBP' | 'EUR';
+
 /** Currency configuration */
 export interface CurrencyConfig {
     symbol: CurrencySymbol;
-    code: string;
+    code: CurrencyCode;
     name: string;
     locale: string;
 }
@@ -72,6 +75,7 @@ export interface UpdateIngredientDTO extends Partial<CreateIngredientDTO> {
 export interface Recipe {
     id: string;
     name: string;
+    currency?: CurrencyCode;         // Currency for this recipe 
     ingredients: Ingredient[];
     packagingCost: number;           // Fixed packaging cost per portion
     laborMinutes: number;            // Minutes to prepare
@@ -88,6 +92,7 @@ export interface Recipe {
 /** DTO for creating a new recipe */
 export interface CreateRecipeDTO {
     name: string;
+    currency?: CurrencyCode;
     packagingCost?: number;
     laborMinutes?: number;
     laborHourlyRate?: number;

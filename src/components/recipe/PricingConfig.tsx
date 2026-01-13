@@ -6,7 +6,7 @@
 import React from 'react';
 import { Select, Slider, Card } from '@/components/ui';
 import type { Recipe, CurrencyCode } from '@/types';
-import { CURRENCY_OPTIONS } from '@/constants';
+import { CURRENCY_OPTIONS, CURRENCIES } from '@/constants';
 
 interface PricingConfigProps {
     recipe: Recipe;
@@ -19,10 +19,13 @@ const MARGIN_PRESETS = [
     { label: 'Premium', value: 75, description: 'High-end, specialty' },
 ];
 
-const currencyOptions = CURRENCY_OPTIONS.map((c) => ({
-    value: c.code,
-    label: `${c.symbol} ${c.code} - ${c.name}`,
-}));
+const currencyOptions = CURRENCY_OPTIONS.map((symbol) => {
+    const config = CURRENCIES[symbol];
+    return {
+        value: config.code,
+        label: `${config.symbol} ${config.code} - ${config.name}`,
+    };
+});
 
 export const PricingConfig: React.FC<PricingConfigProps> = ({
     recipe,
@@ -48,10 +51,10 @@ export const PricingConfig: React.FC<PricingConfigProps> = ({
                             Target Profit Margin
                         </label>
                         <span className={`text-2xl font-bold font-display ${recipe.targetMargin >= 60
-                                ? 'text-[#4CAF50]'
-                                : recipe.targetMargin >= 30
-                                    ? 'text-[#FF9800]'
-                                    : 'text-[#F44336]'
+                            ? 'text-[#4CAF50]'
+                            : recipe.targetMargin >= 30
+                                ? 'text-[#FF9800]'
+                                : 'text-[#F44336]'
                             }`}>
                             {recipe.targetMargin}%
                         </span>

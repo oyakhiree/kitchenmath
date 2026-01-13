@@ -52,6 +52,7 @@ function createNewRecipe(data: CreateRecipeDTO): Recipe {
     return {
         id: uuidv4(),
         name: data.name,
+        currency: data.currency,
         ingredients: [],
         packagingCost: data.packagingCost ?? DEFAULT_RECIPE_VALUES.packagingCost,
         laborMinutes: data.laborMinutes ?? DEFAULT_RECIPE_VALUES.laborMinutes,
