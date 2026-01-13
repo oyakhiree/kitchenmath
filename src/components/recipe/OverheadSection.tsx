@@ -1,5 +1,5 @@
 /**
- * OverheadSection Component v2.0
+ * OverheadSection Component v2.0 (Light Theme)
  * Hidden costs with improved accordion UX
  */
 
@@ -86,9 +86,9 @@ export const OverheadSection: React.FC<OverheadSectionProps> = ({
                     />
                 </div>
                 {recipe.laborMinutes > 0 && recipe.laborHourlyRate > 0 && (
-                    <div className="mt-4 p-3 bg-slate-700/30 rounded-xl text-sm">
+                    <div className="mt-4 p-3 bg-gray-50 rounded-xl text-sm">
                         <div className="flex justify-between">
-                            <span className="text-slate-400">Labor cost per portion:</span>
+                            <span className="text-gray-500">Labor cost per portion:</span>
                             <span className="font-semibold text-[#4CAF50]">
                                 {currency}{((recipe.laborMinutes / 60) * recipe.laborHourlyRate).toFixed(2)}
                             </span>
@@ -125,7 +125,7 @@ export const OverheadSection: React.FC<OverheadSectionProps> = ({
                         { value: 25, label: '25%' },
                     ]}
                 />
-                <p className="mt-4 text-xs text-slate-500">
+                <p className="mt-4 text-xs text-gray-500">
                     Industry standard is 5-10%. Increase for high-risk items or new recipes.
                 </p>
             </Accordion>
@@ -151,7 +151,7 @@ export const OverheadSection: React.FC<OverheadSectionProps> = ({
                     />
 
                     {recipe.usesDeliveryPlatform && (
-                        <div className="pt-4 border-t border-slate-700/40">
+                        <div className="pt-4 border-t border-gray-100">
                             <Slider
                                 label="Platform commission"
                                 value={recipe.platformCommission}
@@ -168,7 +168,7 @@ export const OverheadSection: React.FC<OverheadSectionProps> = ({
                                     { value: 40, label: '40%' },
                                 ]}
                             />
-                            <p className="mt-4 text-xs text-slate-500">
+                            <p className="mt-4 text-xs text-gray-500">
                                 Most delivery platforms charge 15-25%. Check your contract for exact rates.
                             </p>
                         </div>
@@ -195,7 +195,7 @@ export const OverheadSection: React.FC<OverheadSectionProps> = ({
                     min={0}
                     max={25}
                     step={0.5}
-                    color="secondary"
+                    color="primary"
                     marks={[
                         { value: 0, label: '0%' },
                         { value: 5, label: '5%' },
@@ -204,7 +204,7 @@ export const OverheadSection: React.FC<OverheadSectionProps> = ({
                         { value: 25, label: '25%' },
                     ]}
                 />
-                <p className="mt-4 text-xs text-slate-500">
+                <p className="mt-4 text-xs text-gray-500">
                     Nigeria VAT is 7.5%. Set to 0% if you're exempt or prices include tax.
                 </p>
             </Accordion>

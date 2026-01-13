@@ -1,5 +1,5 @@
 /**
- * IngredientList Component v2.0
+ * IngredientList Component v2.0 (Light Theme)
  * Dynamic list with improved empty state and add functionality
  */
 
@@ -43,14 +43,14 @@ export const IngredientList: React.FC<IngredientListProps> = ({
         return (
             <div className="text-center py-12 animate-fade-in-up">
                 {/* Empty State Illustration */}
-                <div className="w-24 h-24 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-[#FF6B35]/20 to-[#F4511E]/10 flex items-center justify-center">
+                <div className="w-24 h-24 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-[#FF6B35]/15 to-[#F4511E]/10 flex items-center justify-center">
                     <svg className="w-12 h-12 text-[#FF6B35]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-2">No ingredients yet</h3>
-                <p className="text-slate-400 mb-8 max-w-sm mx-auto">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">No ingredients yet</h3>
+                <p className="text-gray-500 mb-8 max-w-sm mx-auto">
                     Add your ingredients to calculate accurate costs. Start with the basics or use our quick templates.
                 </p>
 
@@ -64,7 +64,7 @@ export const IngredientList: React.FC<IngredientListProps> = ({
                                 purchaseUnit: template.purchaseUnit as any,
                                 usageUnit: template.usageUnit as any,
                             })}
-                            className="px-4 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-300 text-sm font-medium hover:border-[#FF6B35]/50 hover:text-[#FF6B35] transition-all duration-200"
+                            className="px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-700 text-sm font-medium hover:border-[#FF6B35]/50 hover:text-[#FF6B35] transition-all duration-200"
                         >
                             + {template.name}
                         </button>
@@ -119,11 +119,11 @@ export const IngredientList: React.FC<IngredientListProps> = ({
 
             {/* Total Summary */}
             {ingredients.length > 0 && totalCost > 0 && (
-                <div className="flex items-center justify-between p-4 bg-slate-700/30 rounded-xl mt-4">
-                    <span className="text-sm font-semibold text-slate-400">
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl mt-4">
+                    <span className="text-sm font-semibold text-gray-500">
                         {ingredients.length} ingredient{ingredients.length !== 1 ? 's' : ''}
                     </span>
-                    <span className="text-sm text-slate-300">
+                    <span className="text-sm text-gray-600">
                         Total ingredient cost calculated per portion
                     </span>
                 </div>
