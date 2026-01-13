@@ -1,5 +1,5 @@
 /**
- * Slider Component v2.0
+ * Slider Component v2.0 (Light Theme)
  * Modern range slider with visual feedback
  */
 
@@ -57,20 +57,15 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
         const colors = colorConfig[color] || colorConfig.primary;
 
         const sliderStyle = useMemo(() => ({
-            background: `linear-gradient(to right, ${colors.start} 0%, ${colors.end} ${percentage}%, #334155 ${percentage}%)`,
+            background: `linear-gradient(to right, ${colors.start} 0%, ${colors.end} ${percentage}%, #E2E8F0 ${percentage}%)`,
         }), [percentage, colors.start, colors.end]);
-
-        const thumbStyle: React.CSSProperties = {
-            background: `linear-gradient(135deg, ${colors.start}, ${colors.end})`,
-            boxShadow: `0 4px 12px ${colors.start}66`,
-        };
 
         return (
             <div className="w-full">
                 {(label || showValue) && (
                     <div className="flex items-center justify-between mb-3">
                         {label && (
-                            <label className="text-sm font-semibold text-slate-300">{label}</label>
+                            <label className="text-sm font-semibold text-gray-700">{label}</label>
                         )}
                         {showValue && (
                             <span className={`text-sm font-bold ${colors.text}`}>
@@ -88,8 +83,8 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
                             height: 24px;
                             border-radius: 50%;
                             background: linear-gradient(135deg, ${colors.start}, ${colors.end});
-                            box-shadow: 0 4px 12px ${colors.start}66;
-                            border: 2px solid rgba(255,255,255,0.2);
+                            box-shadow: 0 4px 12px ${colors.start}44;
+                            border: 3px solid white;
                             cursor: pointer;
                             transition: transform 0.15s ease;
                         }
@@ -104,8 +99,8 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
                             height: 24px;
                             border-radius: 50%;
                             background: linear-gradient(135deg, ${colors.start}, ${colors.end});
-                            box-shadow: 0 4px 12px ${colors.start}66;
-                            border: 2px solid rgba(255,255,255,0.2);
+                            box-shadow: 0 4px 12px ${colors.start}44;
+                            border: 3px solid white;
                             cursor: pointer;
                         }
                     `}</style>
@@ -130,7 +125,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
                         {marks.map((mark) => (
                             <span
                                 key={mark.value}
-                                className={`text-xs font-medium transition-colors ${currentValue >= mark.value ? 'text-slate-300' : 'text-slate-600'
+                                className={`text-xs font-medium transition-colors ${currentValue >= mark.value ? 'text-gray-700' : 'text-gray-400'
                                     }`}
                             >
                                 {mark.label}

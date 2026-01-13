@@ -1,5 +1,5 @@
 /**
- * Select Component v2.0
+ * Select Component v2.0 (Light Theme)
  * Modern dropdown with larger touch targets
  */
 
@@ -26,7 +26,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                 {label && (
                     <label
                         htmlFor={selectId}
-                        className="block text-sm font-semibold text-slate-300 mb-2"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
                     >
                         {label}
                     </label>
@@ -36,16 +36,16 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                         ref={ref}
                         id={selectId}
                         className={`
-              w-full px-4 py-3 pr-12 min-h-[48px]
-              bg-slate-800/60 border-2 border-slate-700/80 
-              text-white text-base
-              hover:border-slate-600
-              focus:outline-none focus:border-[#FF6B35] focus:ring-2 focus:ring-[#FF6B35]/20
-              transition-all duration-200 rounded-xl
-              appearance-none cursor-pointer
-              ${error ? 'border-[#F44336] focus:border-[#F44336] focus:ring-[#F44336]/20' : ''}
-              ${className}
-            `}
+                            w-full px-4 py-3 pr-12 min-h-[48px]
+                            bg-white border-2 border-gray-200 
+                            text-gray-900 text-base
+                            hover:border-gray-300
+                            focus:outline-none focus:border-[#FF6B35] focus:ring-2 focus:ring-[#FF6B35]/10
+                            transition-all duration-200 rounded-xl
+                            appearance-none cursor-pointer
+                            ${error ? 'border-[#F44336] focus:border-[#F44336] focus:ring-[#F44336]/10' : ''}
+                            ${className}
+                        `}
                         {...props}
                     >
                         {placeholder && (
@@ -54,13 +54,13 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                             </option>
                         )}
                         {options.map((option) => (
-                            <option key={option.value} value={option.value} className="bg-slate-800">
+                            <option key={option.value} value={option.value} className="bg-white">
                                 {option.label}
                             </option>
                         ))}
                     </select>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
-                        <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                     </div>

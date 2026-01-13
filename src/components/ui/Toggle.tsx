@@ -1,5 +1,5 @@
 /**
- * Toggle Component v2.0
+ * Toggle Component v2.0 (Light Theme)
  * Modern toggle switch with smooth animations
  */
 
@@ -49,10 +49,10 @@ export const Toggle: React.FC<ToggleProps> = ({
           relative inline-flex shrink-0 ${sizes.track}
           items-center rounded-full
           transition-all duration-200 ease-out
-          focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900
+          focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white
           ${checked
-                        ? 'bg-gradient-to-r from-[#FF6B35] to-[#F4511E] shadow-lg shadow-[#FF6B35]/30'
-                        : 'bg-slate-700 hover:bg-slate-600'
+                        ? 'bg-gradient-to-r from-[#FF6B35] to-[#F4511E] shadow-lg shadow-[#FF6B35]/20'
+                        : 'bg-gray-200 hover:bg-gray-300'
                     }
           ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}
         `}
@@ -70,10 +70,10 @@ export const Toggle: React.FC<ToggleProps> = ({
             {(label || description) && (
                 <div className="flex flex-col pt-0.5">
                     {label && (
-                        <span className="text-sm font-semibold text-slate-200">{label}</span>
+                        <span className="text-sm font-semibold text-gray-800">{label}</span>
                     )}
                     {description && (
-                        <span className="text-xs text-slate-500 mt-0.5 leading-relaxed">{description}</span>
+                        <span className="text-xs text-gray-500 mt-0.5 leading-relaxed">{description}</span>
                     )}
                 </div>
             )}

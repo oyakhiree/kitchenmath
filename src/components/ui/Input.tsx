@@ -1,5 +1,5 @@
 /**
- * Input Component v2.0
+ * Input Component v2.0 (Light Theme)
  * Food delivery industry standard design with large touch targets
  */
 
@@ -20,19 +20,19 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
         const variantClasses = {
             default: `
-        bg-slate-800/60 border-2 border-slate-700/80
-        focus:border-[#FF6B35] focus:ring-2 focus:ring-[#FF6B35]/20
-        hover:border-slate-600
+        bg-white border-2 border-gray-200
+        focus:border-[#FF6B35] focus:ring-2 focus:ring-[#FF6B35]/10
+        hover:border-gray-300
       `,
             filled: `
-        bg-slate-700/50 border-2 border-transparent
-        focus:border-[#FF6B35] focus:ring-2 focus:ring-[#FF6B35]/20
-        hover:bg-slate-700/70
+        bg-gray-50 border-2 border-transparent
+        focus:border-[#FF6B35] focus:ring-2 focus:ring-[#FF6B35]/10
+        hover:bg-gray-100
       `,
             flush: `
-        bg-transparent border-0 border-b-2 border-slate-700
+        bg-transparent border-0 border-b-2 border-gray-200
         focus:border-[#FF6B35] rounded-none
-        hover:border-slate-600
+        hover:border-gray-300
       `,
         };
 
@@ -41,14 +41,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 {label && (
                     <label
                         htmlFor={inputId}
-                        className="block text-sm font-semibold text-slate-300 mb-2"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
                     >
                         {label}
                     </label>
                 )}
                 <div className="relative flex items-stretch">
                     {leftAddon && (
-                        <div className="flex items-center px-4 bg-slate-700/60 border-2 border-r-0 border-slate-700/80 rounded-l-xl text-slate-400 text-sm font-medium min-w-[48px] justify-center">
+                        <div className="flex items-center px-4 bg-gray-50 border-2 border-r-0 border-gray-200 rounded-l-xl text-gray-500 text-sm font-medium min-w-[48px] justify-center">
                             {leftAddon}
                         </div>
                     )}
@@ -57,25 +57,25 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                         id={inputId}
                         className={`
               w-full px-4 py-3 min-h-[48px]
-              text-white text-base placeholder-slate-500
+              text-gray-900 text-base placeholder-gray-400
               focus:outline-none
               transition-all duration-200
               ${leftAddon ? '' : 'rounded-l-xl'}
               ${rightAddon ? '' : 'rounded-r-xl'}
-              ${error ? 'border-[#F44336] focus:border-[#F44336] focus:ring-[#F44336]/20' : ''}
+              ${error ? 'border-[#F44336] focus:border-[#F44336] focus:ring-[#F44336]/10' : ''}
               ${variantClasses[variant]}
               ${className}
             `}
                         {...props}
                     />
                     {rightAddon && (
-                        <div className="flex items-center px-4 bg-slate-700/60 border-2 border-l-0 border-slate-700/80 rounded-r-xl text-slate-400 text-sm font-medium min-w-[48px] justify-center">
+                        <div className="flex items-center px-4 bg-gray-50 border-2 border-l-0 border-gray-200 rounded-r-xl text-gray-500 text-sm font-medium min-w-[48px] justify-center">
                             {rightAddon}
                         </div>
                     )}
                 </div>
                 {hint && !error && (
-                    <p className="mt-2 text-xs text-slate-500 flex items-center gap-1">
+                    <p className="mt-2 text-xs text-gray-500 flex items-center gap-1">
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>

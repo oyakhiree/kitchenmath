@@ -1,5 +1,5 @@
 /**
- * MetricCard Component v2.0
+ * MetricCard Component v2.0 (Light Theme)
  * Hero-style metric display for Decision Dashboard
  */
 
@@ -30,23 +30,23 @@ const statusConfig: Record<MarginStatus, {
     healthy: {
         bg: 'bg-[#4CAF50]/10',
         text: 'text-[#4CAF50]',
-        border: 'border-[#4CAF50]/30',
-        glow: 'shadow-[#4CAF50]/20',
-        gradient: 'from-[#4CAF50]/20 via-transparent to-transparent',
+        border: 'border-[#4CAF50]/20',
+        glow: 'shadow-[#4CAF50]/10',
+        gradient: 'from-[#4CAF50]/10 via-transparent to-transparent',
     },
     warning: {
         bg: 'bg-[#FF9800]/10',
         text: 'text-[#FF9800]',
-        border: 'border-[#FF9800]/30',
-        glow: 'shadow-[#FF9800]/20',
-        gradient: 'from-[#FF9800]/20 via-transparent to-transparent',
+        border: 'border-[#FF9800]/20',
+        glow: 'shadow-[#FF9800]/10',
+        gradient: 'from-[#FF9800]/10 via-transparent to-transparent',
     },
     danger: {
         bg: 'bg-[#F44336]/10',
         text: 'text-[#F44336]',
-        border: 'border-[#F44336]/30',
-        glow: 'shadow-[#F44336]/20',
-        gradient: 'from-[#F44336]/20 via-transparent to-transparent',
+        border: 'border-[#F44336]/20',
+        glow: 'shadow-[#F44336]/10',
+        gradient: 'from-[#F44336]/10 via-transparent to-transparent',
     },
 };
 
@@ -88,7 +88,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
         <div
             className={`
         relative overflow-hidden rounded-2xl ${sizes.padding}
-        bg-slate-800/60 border ${colors.border}
+        bg-white border ${colors.border}
         transition-all duration-300
         hover:shadow-lg ${colors.glow}
         ${animate ? 'animate-fade-in-up' : ''}
@@ -105,7 +105,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
             <div className="relative">
                 {/* Top Row: Label & Icon */}
                 <div className="flex items-center justify-between mb-3">
-                    <span className={`${sizes.labelSize} font-semibold text-slate-400 uppercase tracking-wide`}>
+                    <span className={`${sizes.labelSize} font-semibold text-gray-500 uppercase tracking-wide`}>
                         {label}
                     </span>
                     {icon && (
@@ -123,7 +123,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
                 {/* Bottom Row: Subtitle & Trend */}
                 <div className="flex items-center justify-between">
                     {subtitle && (
-                        <span className="text-xs text-slate-500">{subtitle}</span>
+                        <span className="text-xs text-gray-500">{subtitle}</span>
                     )}
                     {trend && (
                         <span
@@ -142,7 +142,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
                                 </svg>
                             )}
                             {Math.abs(trend.value).toFixed(1)}%
-                            {trend.label && <span className="ml-1 text-slate-500 font-normal">{trend.label}</span>}
+                            {trend.label && <span className="ml-1 text-gray-400 font-normal">{trend.label}</span>}
                         </span>
                     )}
                 </div>

@@ -1,5 +1,5 @@
 /**
- * Card Component v2.0
+ * Card Component v2.0 (Light Theme)
  * Food delivery industry standard design
  */
 
@@ -14,12 +14,12 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const variantClasses: Record<CardVariant, string> = {
-    default: 'bg-slate-800/60 border border-slate-700/60',
-    elevated: 'bg-slate-800 border border-slate-700 shadow-xl shadow-black/30',
-    glass: 'bg-slate-800/40 backdrop-blur-xl border border-white/10',
-    bordered: 'bg-transparent border-2 border-slate-700 hover:border-slate-600',
+    default: 'bg-white border border-gray-200 shadow-sm',
+    elevated: 'bg-white border border-gray-100 shadow-xl',
+    glass: 'bg-white/70 backdrop-blur-xl border border-gray-200/50',
+    bordered: 'bg-white border-2 border-gray-200 hover:border-gray-300',
     interactive: `
-    bg-slate-800/60 border border-slate-700/60
+    bg-white border border-gray-200 shadow-sm
     hover:border-[#FF6B35]/50 hover:shadow-lg hover:shadow-[#FF6B35]/5
     transition-all duration-200 cursor-pointer
     active:scale-[0.99]
@@ -35,10 +35,10 @@ const paddingClasses = {
 
 const glowClasses = {
     none: '',
-    primary: 'shadow-lg shadow-[#FF6B35]/20',
-    success: 'shadow-lg shadow-[#4CAF50]/20',
-    warning: 'shadow-lg shadow-[#FF9800]/20',
-    danger: 'shadow-lg shadow-[#F44336]/20',
+    primary: 'shadow-lg shadow-[#FF6B35]/10',
+    success: 'shadow-lg shadow-[#4CAF50]/10',
+    warning: 'shadow-lg shadow-[#FF9800]/10',
+    danger: 'shadow-lg shadow-[#F44336]/10',
 };
 
 export const Card: React.FC<CardProps> = ({
@@ -84,13 +84,13 @@ export const CardHeader: React.FC<CardHeaderProps> = ({
         <div className={`flex items-start justify-between gap-4 mb-5 ${className}`} {...props}>
             <div className="flex items-start gap-3">
                 {icon && (
-                    <div className="p-2.5 rounded-xl bg-gradient-to-br from-[#FF6B35]/20 to-[#F4511E]/10 text-[#FF6B35]">
+                    <div className="p-2.5 rounded-xl bg-gradient-to-br from-[#FF6B35]/10 to-[#F4511E]/5 text-[#FF6B35]">
                         {icon}
                     </div>
                 )}
                 <div>
-                    <h3 className="text-lg font-bold text-white">{title}</h3>
-                    {subtitle && <p className="text-sm text-slate-400 mt-0.5">{subtitle}</p>}
+                    <h3 className="text-lg font-bold text-gray-900">{title}</h3>
+                    {subtitle && <p className="text-sm text-gray-500 mt-0.5">{subtitle}</p>}
                 </div>
             </div>
             {action}
